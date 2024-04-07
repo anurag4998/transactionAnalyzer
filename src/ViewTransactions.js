@@ -3,10 +3,11 @@ import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 
 const countTransactionsByName = function groupTransactionsByName(list, numberOfResults, sortType) {
 
-    function TransactionObject(recepientName, totalTransactionAmount) {
+    function TransactionObject(recepientName, totalTransactionAmount,transactionType) {
         this.recepientName = recepientName;
         this.totalTransactionAmount = totalTransactionAmount;
         this.transactionCount = 1;
+        this.transactionType = transactionType;
     }
       
     if(list && list.length === 0) {
@@ -21,12 +22,13 @@ const countTransactionsByName = function groupTransactionsByName(list, numberOfR
     list.forEach(element => {   
         const recepientName = element.recipient;
         const transactionAmount = element.transactionAmount;
+        const transactionType = element.transactionType;
         if(map.has(element.recipient)) {
             const amountObject = map.get(recepientName);
             map.set(recepientName, updateObject(amountObject,transactionAmount));
         }
         else {
-            const amountObject = new TransactionObject(recepientName,transactionAmount);
+            const amountObject = new TransactionObject(recepientName,transactionAmount,transactionType);
             map.set(recepientName, amountObject);
         }
     });
@@ -86,7 +88,7 @@ const ViewTransactions = ({transactionList, sortType, title}) => {
                                     <span className="capitalize">{groupedTransaction[1].recepientName }</span>
                                     <div>
                                         <span className="text-sm capitalize  text-[#818181] text-wrap"> {groupedTransaction[1].transactionCount} Transactions - </span>
-                                        <span className="text-sm capitalize  text-[#818181] text-wrap"> ₹ {groupedTransaction[1].totalTransactionAmount} spent</span>
+                                        <span className="text-sm capitalize  text-[#818181] text-wrap"> ₹ {groupedTransaction[1].totalTransactionAmount} {groupedTransaction[1].transactionType === 'PAID'? 'spent' : 'credited'}</span>
                                     </div>
                                 </div>
                                 <button className="category bg-[#f2f2f2] p-2 h-10 rounded-md text-sm">
