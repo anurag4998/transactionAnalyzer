@@ -59,7 +59,7 @@ const useFilterTransactions = () => {
     useEffect(() => {
         const filteredList = transactionListFromRedux.filter(transaction => filterForMonths(transaction));
         setList([...filteredList]);
-    },[currentFilterState]);
+    },[currentFilterState,transactionListFromRedux]);
 
     useEffect(() => {
         let sortedList = [];

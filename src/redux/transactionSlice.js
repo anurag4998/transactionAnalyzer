@@ -4,7 +4,6 @@ const transactionSlice = createSlice({
     name: "Transactions",
     initialState : {
        transactionData : [],
-       filteredTransactionData : []
     },
     reducers : {
         updateTransactions : (state, action) => {
@@ -13,10 +12,18 @@ const transactionSlice = createSlice({
         updateFilteredTransactionData : (state, action) => {
             state.filteredTransactionData.length = 0;
             state.filteredTransactionData = [...state.filteredTransactionData, ...action.payload];
+        },
+        updateTransaction : (state,action) => {
+            const transactionId = action.payload.transactionId;
+            const transactionTag = action.payload.transactionTag;  
+            const transaction = state.transactionData.filter(transaction => transaction.transactionId === transactionId);
+            transaction['transactionTag'] = transactionTag;
+            const unfilteredTransactions = state.transactionData.filter(transaction =>  transaction.transactionId !== transactionId);
+            state.transactionData = [...unfilteredTransactions,transaction];
         }
         
     }
 })
 
-export const {updateTransactions,updateFilteredTransactionData} = transactionSlice.actions;
+export const {updateTransactions,updateFilteredTransactionData,updateTransaction} = transactionSlice.actions;
 export default transactionSlice.reducer;

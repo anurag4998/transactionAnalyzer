@@ -8,6 +8,7 @@ import ViewTransactions from "./ViewTransactions";
 
 const Viewer = () => {
     let {list : transactionList, handleDropDownChange} =  useFilterTransactions();
+    console.log(transactionList);
     return (
         <div>
             <div>
@@ -24,9 +25,9 @@ const Viewer = () => {
                 
                     <div className="flex justify-evenly flex-wrap">
                     {
-                        transactionList.map( ({transactionDate,transactionType,recipient,transactionAmount,transactionId}) => {
-                        return <Cardv2 key = {transactionId} transactionDate = {transactionDate} transactionType = {transactionType} transactionAmount = {transactionAmount}
-                            recipient={recipient}  />
+                        transactionList.map( ({transactionDate,transactionType,recipient,transactionAmount,transactionId, transactionTag}) => {
+                        return <Cardv2 key = {transactionId} transactionDate = {transactionDate} transactionId={transactionId} transactionType = {transactionType} transactionAmount = {transactionAmount}
+                            recipient={recipient} transactionTag = {transactionTag} />
                         })
                     }
                     </div>

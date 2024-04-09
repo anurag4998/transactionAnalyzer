@@ -9,7 +9,7 @@ import appStore from "./redux/appStore";
 const Root = () => {
     return (
         <Provider store = {appStore} >
-            <div className="app">
+            <div id="app">
                 <Outlet/>
             </div>  
         </Provider>
