@@ -135,7 +135,8 @@ const Fileinput = () => {
                         transactionType : transactionType,
                         recipient : recipient,
                         transactionAmount : transactionAmount,
-                        transactionId : transactionId
+                        transactionId : transactionId,
+                        transactionTag : null
                     }
                     
                 }

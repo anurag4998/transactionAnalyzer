@@ -15,11 +15,12 @@ const transactionSlice = createSlice({
         },
         updateTransaction : (state,action) => {
             const transactionId = action.payload.transactionId;
-            const transactionTag = action.payload.transactionTag;  
-            const transaction = state.transactionData.filter(transaction => transaction.transactionId === transactionId);
-            transaction['transactionTag'] = transactionTag;
-            const unfilteredTransactions = state.transactionData.filter(transaction =>  transaction.transactionId !== transactionId);
-            state.transactionData = [...unfilteredTransactions,transaction];
+            const transactionTag = action.payload.transactionTag;
+            const updatedArr = [...state.transactionData]
+            const index = state.transactionData.findIndex(item => item.transactionId === transactionId);
+            if (index !== -1) {
+                state.transactionData[index] = { ...state.transactionData[index], transactionTag: transactionTag };
+            }
         }
         
     }

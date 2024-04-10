@@ -1,67 +1,9 @@
 import React, { useEffect } from "react";
-// import Modal from 'react-modal';
+import Modal from 'react-modal';
 import { useDispatch } from 'react-redux';
-import { SiSwiggy,SiZomato,SiFlipkart,SiUber } from "react-icons/si";
-import { MdBrunchDining,MdLocalGroceryStore,MdOutlineSportsTennis,MdLaptop,MdElectricBolt,MdWaterDrop    } from "react-icons/md";
-import { FaTrainSubway,FaTrain,FaBus,FaTaxi,FaAmazon,FaBriefcaseMedical } from "react-icons/fa6";
-import { IoAirplane } from "react-icons/io5";
-import { BiCameraMovie,BiDrink  } from "react-icons/bi";
-import { LuCakeSlice } from "react-icons/lu";
-import { GiConverseShoe, GiSaloon, GiClothes,GiHouse } from "react-icons/gi";
 import { RiCloseCircleFill } from "react-icons/ri";
 import { updateTransaction } from "./redux/transactionSlice";
-
-
-const categoryCatalog = [
-    {
-        name : 'Food & Drinks',
-        subcategories : [
-            {component : <SiSwiggy/>, displayName: 'Swiggy'}, 
-            {component : <SiZomato/>, displayName: 'Zomato'}, 
-            {component : <MdBrunchDining/> ,displayName : 'Eating Out'},
-            {component : <LuCakeSlice/>, displayName : 'Desserts'},
-            {component : <BiDrink />, displayName : 'Drinks'}
-        ]
-    },
-    {   
-        name : 'Shopping',
-        subcategories : [
-            {component: <MdLocalGroceryStore /> , displayName: 'Grocery'} , 
-            {component: <GiClothes /> , displayName: 'Clothes'} , 
-            {component: <FaAmazon /> , displayName: 'Amazon'} , 
-            {component: <SiFlipkart /> , displayName: 'Flipkart'} , 
-            {component: <GiConverseShoe /> , displayName: 'Shoes'} , 
-            {component: <MdLaptop /> , displayName: 'Electronics'} , 
-        ]
-    },
-    {
-        name : 'Entertainment',
-        subcategories : [
-            {component: <BiCameraMovie /> , displayName: 'Movies'} , 
-            {component: <MdOutlineSportsTennis /> , displayName: 'Sports'} , 
-        ]
-    },
-    {
-        name : 'Transport',
-        subcategories : [
-            {component: <SiUber /> , displayName: 'Uber'} , 
-            {component: <FaTrainSubway /> , displayName: 'Metro/Local'} , 
-            {component: <FaTrain /> , displayName: 'Train'} , 
-            {component: <FaBus /> , displayName: 'Bus'} , 
-            {component: <IoAirplane /> , displayName: 'Airplane'} , 
-            {component: <FaTaxi /> , displayName: 'Taxi'} , 
-        ]
-    }, 
-    {
-        name : 'Utilities',
-        subcategories : [
-            {component: <FaBriefcaseMedical  /> , displayName: 'Doctor'} , 
-            {component: <GiSaloon  /> , displayName: 'Saloon'} , 
-            {component: <MdElectricBolt/> , displayName: 'Electricity'},
-            {component: <MdWaterDrop /> , displayName: 'Water'},
-            {component : <GiHouse /> , displayName : 'Rent'}
-        ] 
-    }]
+import categoryCatalog from "./utils/categoryCatalog";
 
     const customStyles = {
         content: {
@@ -122,7 +64,7 @@ const Category = ({toggleModal, isModalOpen, transactionId}) => {
                             <div className="flex flex-row">
                                 {category['subcategories'].map(function(subcategory) {
                                     return (
-                                        <div onClick={() => handleSelection({'category': key, 'subcategory' :subcategory.displayName})} key = {subcategory.displayName} className="flex flex-col justify-evenly mx-2 items-center shadow-lg h-20 w-20 p-2 cursor-pointer">
+                                        <div onClick={() => handleSelection({'category': key, 'subCategory' :subcategory.displayName})} key = {subcategory.displayName} className="flex flex-col justify-evenly mx-2 items-center shadow-lg h-20 w-20 p-2 cursor-pointer">
                                             <div className="text-xl">{subcategory.component} </div>
                                             <div className="text-xs text-[#818181] ">{subcategory.displayName} </div>
                                         </div>

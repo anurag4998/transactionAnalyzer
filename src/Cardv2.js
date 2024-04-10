@@ -1,7 +1,16 @@
 import React, { useState } from "react";
 import Category from "./Category";
+import categoryCatalog from "./utils/categoryCatalog";
+
 const Cardv2 = (props) => {
-    console.log(props);
+    let iconComponent = null;
+    if(props.transactionTag) {
+        
+        const category = categoryCatalog.filter((category) => category.name === props.transactionTag.category.toString())[0];
+        const componentObject = category.subcategories.filter(subcategory => subcategory.displayName === props.transactionTag.subCategory)[0];
+        iconComponent = componentObject;
+    }
+        
     const [openModal, setIsOpenModal] = useState(false);
     const toggleModal = () => {
         setIsOpenModal(!openModal)
@@ -22,13 +31,18 @@ const Cardv2 = (props) => {
                         <span className="text-md mr-1 font-semibold tight-letter-spacing">₹ </span> {props.transactionAmount}
                 </div>
                 {
-                    tagName ?  tagName :
+                    props.transactionTag ?  
+                    <div className="category bg-[#f2f2f2] p-2 h-10 rounded-md text-sm flex items-center">
+                        <span className="mr-2">{iconComponent.component}</span>
+                        <span>{iconComponent.displayName}</span>
+                    </div>
+                     :
                     <button className="category bg-[#f2f2f2] p-2 h-10 rounded-md text-sm" onClick={toggleModal}>
                         Assign a category
                     </button> 
                 }
                 
-                {/* {openModal && <Category toggleModal = {toggleModal} isModalOpen = {openModal} transactionId = {transactionId}/>} */}
+                {openModal && <Category toggleModal = {toggleModal} isModalOpen = {openModal} transactionId = {props.transactionId}/>}
             </div>
 
         </div>
