@@ -93,7 +93,7 @@ const Fileinput = () => {
                         }
     
                     }
-                    const getRecepientDetails = function getRecepientDetails(transactionType, transactionRemarkRawText) {
+                    const getRecipientDetails = function getRecipientDetails(transactionType, transactionRemarkRawText) {
                         if(transactionType !== 'RECIEVED') {
                             let recipient = transactionRemarkRawText.match(/to (.+) using/);
                             if(!recipient) {
@@ -109,11 +109,11 @@ const Fileinput = () => {
                         return "";
                     }
                     const getTransactionAmount = function getTransactionAmount(transactionRemarkRawText) {
-                        const matchedString = transactionRemarkRawText.match(/₹([\d,]+\.\d+)/);
+                        const matchedString = transactionRemarkRawText.match(/₹([\d,]+)/);
                         if(!matchedString) {
                             return null;
                         }
-                        return parseFloat(matchedString[1]);
+                        return parseFloat(matchedString[1].replace(/,/g, ''));
                     }
                     const getTransactionId = function getTransactionId() {
                         const uniqueId = uuidv4();
@@ -121,9 +121,15 @@ const Fileinput = () => {
                     }
                     const transactionRemarkRawText = transactionRowDatum.childNodes[1].childNodes[0].nodeValue;
 
+                    //check first if transaction was completed, the inner HTML will contain a string
+
+                    if(!transactionRowDatum.innerText.includes('Completed')) {
+                        return null;
+                    }
+
                     let transactionDate = transformDateStringToDateObject(transactionRowDatum.childNodes[1].childNodes[2].nodeValue);
                     let transactionType = getTransactionType(transactionRemarkRawText);
-                    let recipient = getRecepientDetails(transactionType, transactionRemarkRawText);
+                    let recipient = getRecipientDetails(transactionType, transactionRemarkRawText);
                     let transactionAmount = getTransactionAmount(transactionRemarkRawText)
 
                     if(!transactionAmount || !recipient || !transactionDate || !transactionType ) {
@@ -147,7 +153,7 @@ const Fileinput = () => {
             const fileContents = event.target.result;
             const transactionRowsArray = convertHTMLDataToTransactionArray(fileContents);
             const transactionObjectList = createTransactionObjectsFromRowData(transactionRowsArray);
-            console.log(transactionObjectList);
+            // console.log(transactionObjectList);
             localStorage.setItem('transactions', JSON.stringify(transactionObjectList));
             dispatch(updateTransactions(transactionObjectList));
             navigate('/transactions');

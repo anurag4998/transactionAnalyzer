@@ -31,14 +31,16 @@ const Cardv2 = (props) => {
                         <span className="text-md mr-1 font-semibold tight-letter-spacing">₹ </span> {props.transactionAmount}
                 </div>
                 {
-                    props.transactionTag ?  
-                    <div className="category bg-[#f2f2f2] p-2 h-10 rounded-md text-sm flex items-center">
-                        <span className="mr-2">{iconComponent.component}</span>
-                        <span>{iconComponent.displayName}</span>
-                    </div>
-                     :
-                    <button className="category bg-[#f2f2f2] p-2 h-10 rounded-md text-sm" onClick={toggleModal}>
-                        Assign a category
+                   
+                    <button className="category bg-[#f2f2f2] p-2 h-10 rounded-md text-sm flex items-center" onClick={toggleModal}>
+                        { props.transactionTag ? 
+                            <>
+                                <span className="mr-2">{iconComponent.component}</span>
+                                <span>{iconComponent.displayName}</span>
+                            </>
+                            : 
+                            'Assign a category'
+                        }
                     </button> 
                 }
                 

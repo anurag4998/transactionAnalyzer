@@ -32,50 +32,62 @@ const getFilterValues = function getFilterValues(currentFilterState) {
 
 }
 
+const sortList = function sortList(selection, listToSort) {
+      
+    let sortedList = [];
+    if(selection === 'costLowToHigh') {
+        sortedList = listToSort.sort((a,b) => a.transactionAmount - b.transactionAmount);
+    }
+    else if(selection === 'costHighToLow') {
+        sortedList =listToSort.sort((a,b) => b.transactionAmount - a.transactionAmount);
+    }
+    return sortedList;
+}
+
+const filterForMonths = function filterForDates(transactionData,fromDate,toDate) {
+    function isDateBetween(dateToCheck, startDate, endDate) {
+        return dateToCheck >= startDate && dateToCheck <= endDate;
+    }
+    const dateToCheck = new Date(transactionData.transactionDate);
+    return isDateBetween(dateToCheck, fromDate, toDate);
+}
 const useFilterTransactions = () => {
     let transactionListFromRedux = useSelector((store) => store.transactions.transactionData);
     let currentFilterState = useSelector((store) => store.filter);
     const [list, setList] = useState([]);
-    const [selection, setSelection] = useState('');
+    const [selection, setSelection] = useState('costHighToLow');
 
     const handleDropDownChange = (event) => {
         const selection = event.target.value;
         setSelection(selection);
     }
-
-    const  {fromDate,toDate} = useMemo(() => {
+    const {fromDate,toDate} = useMemo(() => {
         return getFilterValues(currentFilterState);
     },
     [currentFilterState])
-    
-    const filterForMonths = function filterForDates(transactionData) {
-        function isDateBetween(dateToCheck, startDate, endDate) {
-            return dateToCheck >= startDate && dateToCheck <= endDate;
-        }
-        const dateToCheck = new Date(transactionData.transactionDate);
-        return isDateBetween(dateToCheck, fromDate, toDate);
-    }
 
     useEffect(() => {
-        const filteredList = transactionListFromRedux.filter(transaction => filterForMonths(transaction));
-        setList([...filteredList]);
+
+        const filteredList = transactionListFromRedux.filter(transaction => filterForMonths(transaction,fromDate,toDate));
+        if(selection) {
+            const sortedList = sortList(selection, filteredList);
+            setList([...sortedList]);
+        }
+        else {
+            setList([...filteredList]);
+        }
+
     },[currentFilterState,transactionListFromRedux]);
 
     useEffect(() => {
-        let sortedList = [];
-        if(selection === 'costLowToHigh') {
-            sortedList = list.sort((a,b) => a.transactionAmount - b.transactionAmount);
-            setList([...sortedList]);
-        }
-        else if(selection === 'costHighToLow') {
-            sortedList =list.sort((a,b) => b.transactionAmount - a.transactionAmount);
+        if(list.length > 0) {
+            const sortedList = sortList(selection, list);
             setList([...sortedList]);
         }
     },[selection]);
-
     return {
         list, handleDropDownChange
     }
 }
 
-export default useFilterTransactions
+export default useFilterTransactions;

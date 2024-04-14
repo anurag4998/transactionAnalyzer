@@ -4,7 +4,7 @@ import { FaTrainSubway,FaTrain,FaBus,FaTaxi,FaAmazon,FaBriefcaseMedical } from "
 import { IoAirplane } from "react-icons/io5";
 import { BiCameraMovie,BiDrink  } from "react-icons/bi";
 import { LuCakeSlice } from "react-icons/lu";
-import { GiConverseShoe, GiSaloon, GiClothes,GiHouse } from "react-icons/gi";
+import { GiConverseShoe, GiSaloon, GiClothes,GiHouse,GiFrenchFries } from "react-icons/gi";
 
 const categoryCatalog = [
     {
@@ -14,7 +14,8 @@ const categoryCatalog = [
             {component : <SiZomato/>, displayName: 'Zomato'}, 
             {component : <MdBrunchDining/> ,displayName : 'Eating Out'},
             {component : <LuCakeSlice/>, displayName : 'Desserts'},
-            {component : <BiDrink />, displayName : 'Drinks'}
+            {component : <BiDrink />, displayName : 'Drinks'},
+            {component : <GiFrenchFries/> , displayName : 'Snacks'}
         ]
     },
     {   

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import Modal from 'react-modal';
 import { useDispatch } from 'react-redux';
 import { RiCloseCircleFill } from "react-icons/ri";
-import { updateTransaction } from "./redux/transactionSlice";
+import { updateTransactionById,updateTransactionByName } from "./redux/transactionSlice";
 import categoryCatalog from "./utils/categoryCatalog";
 
     const customStyles = {
@@ -33,14 +33,19 @@ import categoryCatalog from "./utils/categoryCatalog";
           },
       };
 
-const Category = ({toggleModal, isModalOpen, transactionId}) => {
+const Category = ({toggleModal, isModalOpen, transactionId, recipientName}) => {
     const dispatch = useDispatch();
     function closeModal() {
         toggleModal(false);
     }
     const handleSelection = function(transactionTag) {
         console.log(transactionTag)
-        dispatch(updateTransaction({transactionId, transactionTag}));
+        if(transactionId) {
+            dispatch(updateTransactionById({transactionId, transactionTag}));
+        }
+        else if(recipientName) {
+            dispatch(updateTransactionByName({recipientName: recipientName, transactionTag}));
+        }
         closeModal();
     }
     return (
@@ -57,7 +62,7 @@ const Category = ({toggleModal, isModalOpen, transactionId}) => {
                 {categoryCatalog.map (function(category) {
                     const key = category['name'];
                     return(
-                        <div className="category-row mb-4">
+                        <div className="category-row mb-4" key = {key}>
                             <div className = "heading-wrapper">
                                 <h1 className="heading text-[#818181] text-md" >{key}</h1>
                             </div>
