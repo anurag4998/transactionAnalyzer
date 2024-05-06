@@ -3,12 +3,18 @@ import Category from "./Category";
 import categoryCatalog from "./utils/categoryCatalog";
 
 const Cardv2 = (props) => {
-    let iconComponent = null;
+    const [transactionTag, setTransactionTag] = useState('');
+    let iconComponentObject = null;
     if(props.transactionTag) {
-        
-        const category = categoryCatalog.filter((category) => category.name === props.transactionTag.category.toString())[0];
-        const componentObject = category.subcategories.filter(subcategory => subcategory.displayName === props.transactionTag.subCategory)[0];
-        iconComponent = componentObject;
+        if(props.transactionTag.subCategory === 'No Icon') {
+            const componentObject = categoryCatalog.filter(category => category.name === props.transactionTag.category.toString())[0];
+            iconComponentObject = componentObject.defaultComponent;
+        }
+        else {
+            const category = categoryCatalog.filter((category) => category.name === props.transactionTag.category.toString())[0];
+            const componentObject = category.subcategories.filter(subcategory => subcategory.displayName === props.transactionTag.subCategory)[0];
+            iconComponentObject = componentObject;
+        }
     }
         
     const [openModal, setIsOpenModal] = useState(false);
@@ -16,8 +22,8 @@ const Cardv2 = (props) => {
         setIsOpenModal(!openModal)
     }
     return (
-        <div className="card flex flex-col shadow-xl bg-[rgb(255,255,255)] w-5/12 rounded-lg m-4 ">
-            <div className="flex flex-row justify-between items-center p-2 border-b-2">
+        <div className="card flex flex-col shadow-xl bg-[rgb(255,255,255)] sm:w-12/12 lg:w-5/12 rounded-lg m-4 ">
+            <div className="flex flex-row justify-between items-center p-2 border-b-2 w-[100%]">
                 <div className="recipient text-sm capitalize  text-[#818181] text-wrap">
                     {props.recipient}
                 </div>
@@ -35,8 +41,8 @@ const Cardv2 = (props) => {
                     <button className="category bg-[#f2f2f2] p-2 h-10 rounded-md text-sm flex items-center" onClick={toggleModal}>
                         { props.transactionTag ? 
                             <>
-                                <span className="mr-2">{iconComponent.component}</span>
-                                <span>{iconComponent.displayName}</span>
+                                {iconComponentObject.iconComponent && <span className="mr-2">{iconComponentObject.iconComponent}</span>}
+                                <span>{iconComponentObject.displayName}</span>
                             </>
                             : 
                             'Assign a category'
@@ -44,7 +50,10 @@ const Cardv2 = (props) => {
                     </button> 
                 }
                 
-                {openModal && <Category toggleModal = {toggleModal} isModalOpen = {openModal} transactionId = {props.transactionId}/>}
+                {openModal && 
+                    <Category toggleModal = {toggleModal} isModalOpen = {openModal} transactionId = {props.transactionId} recipientName = {''} 
+                    setTransactionTag={setTransactionTag} transactionTag={transactionTag}/>
+                }
             </div>
 
         </div>

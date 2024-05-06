@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { useDispatch } from 'react-redux';
+import { useDispatch , useSelector } from 'react-redux';
 import { changeFilter } from "./redux/filterSlice";
 
 
 const Filter = () => {
     const [isCustomDateEnabled, setIsCustomDateEnabled] = useState(false);
+    let currentFilterState = useSelector((store) => store.filter);
     const dispatch = useDispatch();
 
     const dispatchAction = () => {
@@ -51,7 +52,7 @@ const Filter = () => {
     return(
         <div className="p-2">
             <div>
-                <select onChange={handleDropDownChange}>
+                <select onChange={handleDropDownChange} defaultValue={currentFilterState.filterApplied || 'Select'}>
                     <option value="currentMonth">This Month</option>
                     <option value="previousMonth">Previous Month</option>
                     <option value = "lastThreeMonths">Last 3 Months</option>

@@ -33,13 +33,17 @@ const getFilterValues = function getFilterValues(currentFilterState) {
 }
 
 const sortList = function sortList(selection, listToSort) {
-      
+    console.log(listToSort)     
     let sortedList = [];
     if(selection === 'costLowToHigh') {
         sortedList = listToSort.sort((a,b) => a.transactionAmount - b.transactionAmount);
     }
     else if(selection === 'costHighToLow') {
         sortedList =listToSort.sort((a,b) => b.transactionAmount - a.transactionAmount);
+    }
+    else if(selection === 'untagged') {
+        console.log('untagged')
+        sortedList = listToSort.sort((a,b) => a.hasOwnProperty('transactionTag') ? -1 : b.hasOwnProperty('transactionTag') ? 1 : 0 )
     }
     return sortedList;
 }

@@ -1,8 +1,8 @@
+import React from "react";
 import categoryCatalog from "./categoryCatalog";
 
 
-const useGroupTransactionsByName = function groupTransactionsByName(list, numberOfResults, filterON) {
-
+const useGroupTransactions = function groupTransactionsByName(list) {
     function TransactionObject(recipientName, totalTransactionAmount,transactionType,iconComponent) {
         this.recipientName = recipientName;
         this.totalTransactionAmount = totalTransactionAmount;
@@ -33,27 +33,21 @@ const useGroupTransactionsByName = function groupTransactionsByName(list, number
             componentObject = {...componentObject, category: categoryObject.name};
             iconComponent = componentObject;
 
-        }
-        if(map.has(element.recipient)) {
-            const amountObject = map.get(recipientName);
-            map.set(recipientName, updateObject(amountObject,transactionAmount));
-        }
-        else {
-            const amountObject = new TransactionObject(recipientName,transactionAmount,transactionType,iconComponent);
-            map.set(recipientName, amountObject);
+            if(map.has(element.recipient)) {
+                const amountObject = map.get(recipientName);
+                map.set(recipientName, updateObject(amountObject,transactionAmount));
+            }
+            else {
+                const amountObject = new TransactionObject(recipientName,transactionAmount,transactionType,iconComponent);
+                map.set(recipientName, amountObject);
+            }
         }
     });
 
     let sortedArray = Array.from(map);
-    if(filterON === 'frequency') {
-        sortedArray.sort((a, b) => b[1].transactionCount - a[1].transactionCount);
-    }
-    else if(filterON === 'value') {
-        sortedArray.sort((a, b) => b[1].totalTransactionAmount - a[1].totalTransactionAmount);
-    }
-    sortedArray = sortedArray.filter((item,index) => index < numberOfResults);
+ 
     return sortedArray;
 
 }
 
-export default useGroupTransactionsByName;
+export default useGroupTransactions;

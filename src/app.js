@@ -7,6 +7,7 @@ import Viewer from "./Viewer";
 import ViewChart from "./ViewChart";
 import { Provider } from "react-redux";
 import appStore from "./redux/appStore";
+import '../global.css'
 const Root = () => {
     return (
         <Provider store = {appStore} >
