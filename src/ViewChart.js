@@ -76,11 +76,10 @@ const populateMapForParentCategoriesV2 = (list) => {
   if(!list) {
     return;
   }
-  console.log(list);
   const map = new Map();
   
   list.forEach(function(transactionObject) {
-      const categoryName = transactionObject[0];
+      let categoryName = transactionObject[0];
       const transactionsArray = transactionObject[1];
       if(!categoryName) {
         categoryName = 'Others';
