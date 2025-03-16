@@ -59,7 +59,7 @@ const Category = ({toggleModal, isModalOpen, transactionId, recipientName, setTr
         closeModal();
     }
     const onCardClick = function onCardClick(categoryName, subcategory) {
-        setTransactionTag({'category': categoryName, 'subCategory' :subcategory.displayName}) 
+        //setTransactionTag({'category': categoryName, 'subCategory' :subcategory.displayName}) 
         handleSelection({'category': categoryName, 'subCategory' :subcategory.displayName})
     }
     return (
@@ -88,7 +88,7 @@ const Category = ({toggleModal, isModalOpen, transactionId, recipientName, setTr
                                     {category['subcategories'].map(function(subCategory) {
                                         return (
                                         
-                                        transactionTag.subCategory === subCategory.displayName ? 
+                                        transactionTag && transactionTag.subCategory === subCategory.displayName ? 
                                             <div onClick={() => onCardClick(categoryName, subCategory)} key = {subCategory.displayName} className="flex flex-col justify-evenly mr-4 items-center shadow-sm min-h-20 min-w-20 p-2 cursor-pointer rounded-md border-2 border-[#666]">
                                                 <div className="text-xl">{subCategory.iconComponent} </div>
                                                 <div className="text-xs text-[#818181] ">{subCategory.displayName} </div>
