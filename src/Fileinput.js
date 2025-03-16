@@ -61,7 +61,7 @@ const Fileinput = () => {
                             const regex = /[a-zA-Z]+|[0-9]+/g;
                             let [month, day] = monthAndDate.match(regex);
                             let yearInt = parseInt(year);
-                            monthIndex = getMonthIndexFromString(month);
+                            let monthIndex = getMonthIndexFromString(month);
                             day = parseInt(day);
 
                             timeString = timeString.trimStart();
