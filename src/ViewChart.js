@@ -32,7 +32,6 @@ const printElementAtEvent = (element,parentData) => {
 
   const { datasetIndex, index } = element[0];
 
-  console.log(parentData.labels[index], parentData.datasets[datasetIndex].data[index]);
   return parentData.labels[index];
 };
 
@@ -70,6 +69,26 @@ const populateMapForParentCategories = (list) => {
       }
   })
   
+  return map;
+}
+
+const populateMapForParentCategoriesV2 = (list) => {
+  if(!list) {
+    return;
+  }
+  console.log(list);
+  const map = new Map();
+  
+  list.forEach(function(transactionObject) {
+      const categoryName = transactionObject[0];
+      const transactionsArray = transactionObject[1];
+      if(!categoryName) {
+        categoryName = 'Others';
+      }
+      const amount = transactionsArray.reduce((acc, transaction) =>  acc + transaction.totalTransactionAmount, 0);
+      map.set(categoryName, amount);
+  });
+
   return map;
 }
 
@@ -111,9 +130,6 @@ const getChildData = (list,category) => {
 
     }
   })
-
-  
-  
   const data = {
     labels: labels,
     datasets: [
@@ -126,6 +142,44 @@ const getChildData = (list,category) => {
       },
     ]
   };
+  return data;
+}
+
+const getChildDataV2 = (list,category) => {
+  const labels = [];
+  const amount = [];
+  const backgroundColor = [];
+
+  const map = new Map();
+
+  const transactionObject = list.filter(transaction => transaction[0] === category);
+  const transactionsArray = transactionObject[0][1];
+  transactionsArray.forEach(function(transaction) {
+    if(map.has(transaction.recipientName)) {
+      map.set(transaction.recipientName, map.get(transaction.recipientName) + parseFloat(transaction.totalTransactionAmount));
+    }
+    else {
+      map.set(transaction.recipientName, transaction.totalTransactionAmount);
+    }
+  });
+  map.forEach((value,key) => {
+    labels.push(key);
+    amount.push(value);
+    backgroundColor.push(randomColourGenerator());
+  });
+  const data = {
+    labels: labels,
+    datasets: [
+      {
+        label: 'Amount Spent',
+        data: amount,
+        backgroundColor: backgroundColor,
+        borderColor: backgroundColor,
+        borderWidth: 1,
+      },
+    ]
+  };
+  
   return data;
 }
 const ViewChart = () => {
@@ -149,14 +203,15 @@ const ViewChart = () => {
       const categoryClicked = printElementAtEvent(getElementAtEvent(chart, event),parentData);
       printElementsAtEvent(getElementsAtEvent(chart, event), parentData);
 
-      const _childData = getChildData(groupedList,categoryClicked);
+      const _childData = getChildDataV2(groupedList,categoryClicked);
       setChildData({..._childData});
       setShowSubCategoryData(true);
-
     }
+
     useEffect(() => {
       const filteredList = getFilteredList(groupedList);
-      const map = populateMapForParentCategories(filteredList);
+      //const map = populateMapForParentCategories(filteredList);
+      const map = populateMapForParentCategoriesV2(filteredList);
       const parentData = getChartDataFromMap(map); 
       setParentData(parentData);
     }, [])
@@ -191,12 +246,3 @@ const ViewChart = () => {
 }
 
 export default ViewChart;
-
-
-  
-    //   newParentData = getFilteredList(list)
-    //                       .then(filteredList => populateMapForParentCategories(filteredList))
-    //                       .then((map) => getChartDataFromMap(map))
-    //                       .then((chartData) => chartData);
-    //   console.log(newParentData, typeof(newParentData));
-    // }
